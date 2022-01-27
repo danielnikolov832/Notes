@@ -1,181 +1,174 @@
-using System.Diagnostics.CodeAnalysis;
+using System.ComponentModel;
 
 namespace NotesLibrary
 {
     // The base form of a note, which is a holder of text information
-    public class Note
+    public class Note : INotifyPropertyChanged
     {
-        private const string otherSubNotesWithTheSameNameString =
-        "The argument 'name' is not valid, because there is a subNote with the same name";
-
-        public string get_name { get; private set; }
-        public string text;
-        public Note? get_parentNote { get; init; }
-
-        public HashSet<Note> get_subNotes { get; init; }
-        private class NoteEqualityComparer : IEqualityComparer<Note>
+        private string name;
+        public string getset_name
         {
-            public bool Equals(Note? x, Note? y)
+            get => name;
+            set 
             {
-                if (x == null && y == null) return true;
-
-                if (x == null || y == null) return false;
-
-                bool output_areWithSameName = x.get_name == y.get_name;
-
-                return output_areWithSameName;
-            }
-
-            public int GetHashCode([DisallowNullAttribute] Note obj)
-            {
-                return obj.get_name.GetHashCode(StringComparison.Ordinal);
+                name = value;
+                OnPropertyChanged(nameof(getset_name));
             }
         }
 
-        // Creates an object, with all of the same fields and properties 
-        // as the copy object, but who is a different reference to it.
-        private Note(Note copy)
+        private string text;
+        public string getset_text
         {
-            get_name = copy.get_name;
-            get_subNotes = copy.get_subNotes;
-            text = copy.text;
-            get_parentNote = copy.get_parentNote;
+            get => text;
+            set 
+            {
+                text = value;
+                OnPropertyChanged(nameof(getset_text));
+            }
         }
 
-        public Note(string name, string text = "", Note? parentNote = null)
+        private Note? parentNote;
+        public Note? get_parentNote
         {
-            get_name = name;
-            this.text = text;
-            get_parentNote = parentNote;
+            get => parentNote;
+            private set 
+            {
+                parentNote = value;
+                OnPropertyChanged(nameof(get_parentNote));
+            }
+        }
+
+                
+        private NoteCollection get_subNotes { get; init; }
+        public IReadOnlyCollection<Note> get_subNotesAsReadOnly
+        {
+            get => (IReadOnlyCollection<Note>)get_subNotes;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public string Temp_GetEventInvocationListAsString()
+        {
+            string output = string.Empty;
+
+            if (PropertyChanged != null)
+            {
+                foreach (Delegate _delegate in PropertyChanged.GetInvocationList())
+                {
+                    output += _delegate.Method.Name + "\n";
+                }
+            }
             
-            get_subNotes = new HashSet<Note>(new NoteEqualityComparer());
+            return output;
         }
 
-        public Note(string name, IEnumerable<Note> subNotes, string text = "", Note? parentNote = null)
+        public Note(string name, string text = "")
         {
-            get_name = name;
+            this.name = name;
             this.text = text;
-            get_parentNote = parentNote;
 
-            get_subNotes = new HashSet<Note>(new NoteEqualityComparer());
+            get_subNotes = new NoteCollection();
 
-            foreach (Note noteItem in subNotes)
-            {
-                AddSubNote_OrThrow(noteItem);
-            }
+            SetSubNotesEvents();
         }
 
-        public void SetName_OrThrow(string name)
+        public Note(string name, IEnumerable<Note> subNotes, string text = "")
         {
-            bool isNoteValidWithNewName = IsNoteValidWithNewName(this, name);
+            this.name = name;
+            this.text = text;
 
-            if (isNoteValidWithNewName)
+            get_subNotes = new NoteCollection();
+
+            SetSubNotesEvents();
+
+            foreach (Note subNote in subNotes)
             {
-                this.get_name = name;
-            }
-            else
-            {
-                throw new ArgumentException(otherSubNotesWithTheSameNameString);
+                get_subNotes.Add(subNote);
             }
         }
 
-        private static bool IsNoteValidWithNewName(Note note, string newName)
-        {   
-            Note noteWithNewName = new Note(note);
-            noteWithNewName.get_name = newName;
-
-            bool output_isNoteValidForParentNote = IsSubNoteValidForParentNote(noteWithNewName);
-
-            return output_isNoteValidForParentNote;
-        }
-
-        private static bool IsSubNoteValidForParentNote(Note subNote)
+        private void SetSubNotesEvents()
         {
-            Note? parentNote = subNote.get_parentNote;
-
-            if (parentNote == null) return true;
-
-            return parentNote.get_subNotes.Contains(subNote);
+            get_subNotes.OnBeforeInsertItem += get_SubNotes_NoteCollection_OnBeforeInsertOrSetItem;
+            get_subNotes.OnBeforeSetItem += get_SubNotes_NoteCollection_OnBeforeInsertOrSetItem;
+            get_subNotes.OnBeforeRemoveItem += get_SubNotes_NoteCollection_OnBeforeRemoveItem;
         }
 
-        public bool TrySetName(string name)
+        protected virtual void get_SubNotes_NoteCollection_OnBeforeInsertOrSetItem(object? sender, Note e)
         {
-            try
-            {
-                SetName_OrThrow(name);
-            }
-            catch(ArgumentException)
-            {
-                return false;
-            }
-
-            return true;
+            e.get_parentNote = this;
         }
 
-        public void AddSubNote_OrThrow(Note subNote)
+        protected virtual void get_SubNotes_NoteCollection_OnBeforeRemoveItem(object? sender, Note e)
         {
-            bool isSubNoteAdded = get_subNotes.Add(subNote);
-
-            if (isSubNoteAdded == false)
-            {
-                throw new ArgumentException(otherSubNotesWithTheSameNameString);
-            }
+            e.get_parentNote = null;
         }
 
-        public bool TryAddSubNote(Note subNote)
+        public void AddSubNote(Note subNote)
         {
-            try
-            {
-                AddSubNote_OrThrow(subNote);
-            }
-            catch(ArgumentException)
-            {
-                return false;
-            }
-
-            return true;
+            get_subNotes.Add(subNote);
         }
 
         public Note? GetSubNoteWithName(string name)
         {
-            foreach (Note noteItem in get_subNotes)
-            {
-                if (noteItem.get_name == name) return noteItem;
-            }
+            Note? output = get_subNotes.GetNoteWithName(name);
 
-            return null;
+            return output;
         }
 
-        public bool TryRemoveSubNote(Note subNote)
+        public bool RemoveSubNote(Note subNote)
         {
-            bool output_isRemoved = get_subNotes.Remove(subNote);
+            bool output = get_subNotes.Remove(subNote);
 
-            return output_isRemoved;
+            return output;
+        }
+
+        public void RemoveSubNoteAtIndex(int index)
+        {
+            get_subNotes.RemoveAt(index);
+        }
+
+        public bool TryRemoveSubNoteAtIndex(int index)
+        {
+            try
+            {
+                RemoveSubNoteAtIndex(index);
+
+                return true;
+            }
+            catch(ArgumentException)
+            {
+                return false;
+            }
         }
 
         public bool TryRemoveSubNoteWithName(string name)
         {
-            foreach (Note noteItem in get_subNotes)
-            {
-                if (noteItem.get_name == name)
-                {
-                    bool output_isRemoved = get_subNotes.Remove(noteItem);
+            Note? subNote = GetSubNoteWithName(name);
 
-                    return output_isRemoved;
-                }
-            }
+            if (subNote == null) return false;
+            
+            bool output = RemoveSubNote(subNote);
 
-            return false;
+            return output;
+        }
+
+        public void RemoveAllSubNotesWhere(Predicate<Note> condition)
+        {
+            get_subNotes.RemoveAllWhere(condition);
         }
 
         public void RemoveAllSubNotes()
         {
-            RemoveAllSubNotesWhere( (Note obj) => { return true; } );
+            get_subNotes.RemoveAll();
         }
 
-        public void RemoveAllSubNotesWhere(Predicate<Note> match)
+        public override string ToString()
         {
-            get_subNotes.RemoveWhere(match);
+            return name + " says " + text;
         }
     }
 }
