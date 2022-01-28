@@ -7,6 +7,7 @@ namespace NotesLibrary
     // Defines a collection for notes, with the capability to manage said notes
     public class NoteCollection : Collection<Note>
     {
+        // Defines the way in which equality between notes is determined, to ensure no replication of notes
         private class NoteEqualityComparer : IEqualityComparer<Note>
         {
             public bool Equals(Note? x, Note? y)
@@ -43,14 +44,6 @@ namespace NotesLibrary
 
         }
 
-        public NoteCollection(IEnumerable<Note> noteEnumerable) : base()
-        {
-            foreach (Note noteItem in noteEnumerable)
-            {
-                Add(noteItem);
-            }
-        }
-
         #region Collection<Note> overrides
 
             protected override void InsertItem(int index, Note item)
@@ -59,9 +52,9 @@ namespace NotesLibrary
     
                 if (isItemValid)
                 {
-                    OnBeforeInsertItem?.Invoke(this, item);
-
                     SubscribeToPropertyChangeEventOfElement(item);
+
+                    OnBeforeInsertItem?.Invoke(this, item);
                     
                     base.InsertItem(index, item);
                 }
@@ -77,9 +70,12 @@ namespace NotesLibrary
     
                 if (isItemValid)
                 {
-                    OnBeforeSetItem?.Invoke(this, item);
+                    Note previousExistingItem = this[index];
 
+                    UnsubscribeToPropertyChangeEventOfElement(previousExistingItem);
                     SubscribeToPropertyChangeEventOfElement(item);
+
+                    OnBeforeSetItem?.Invoke(this, item);
 
                     base.SetItem(index, item);
                 }
@@ -93,9 +89,9 @@ namespace NotesLibrary
             {
                 Note item = this[index];
 
-                OnBeforeRemoveItem?.Invoke(this, item);
-
                 UnsubscribeToPropertyChangeEventOfElement(item);
+
+                OnBeforeRemoveItem?.Invoke(this, item);
 
                 base.RemoveItem(index);
             }
@@ -106,9 +102,9 @@ namespace NotesLibrary
                 {
                     Note item = this[i];
 
-                    OnBeforeRemoveItem?.Invoke(this, item);
-
                     UnsubscribeToPropertyChangeEventOfElement(item);
+
+                    OnBeforeRemoveItem?.Invoke(this, item);
                 }
     
                 base.ClearItems();
@@ -125,7 +121,7 @@ namespace NotesLibrary
         {
             e.PropertyChanged -= Note_PropertyChanged;
         }
-        
+
         private bool IsNewItemValid(Note noteItem)
         {
             for (int i = 0; i < Count; i++)
@@ -159,6 +155,42 @@ namespace NotesLibrary
             }
         }
 
+        public bool TryAdd(Note note)
+        {
+            try
+            {
+                Add(note);
+            }
+            catch(ArgumentException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
+        public void AddRange(IEnumerable<Note> noteEnumerable)
+        {
+            foreach (Note noteItem in noteEnumerable)
+            {
+                Add(noteItem);
+            }
+        }
+
+        public bool[] TryAddRange(IEnumerable<Note> noteEnumerable)
+        {
+            List<bool> output = new List<bool>();
+
+            foreach (Note noteItem in noteEnumerable)
+            {
+                bool isAdded = TryAdd(noteItem);
+
+                output.Add(isAdded);
+            }
+
+            return output.ToArray();
+        }
+
         public Note? GetNoteWithName(string name)
         {
             for (int i = 0; i < Count; i++)
@@ -169,20 +201,6 @@ namespace NotesLibrary
             }
 
             return null;
-        }
-
-        public bool TryRemoveAt(int index)
-        {
-            try
-            {
-                RemoveAt(index);
-
-                return true;
-            }
-            catch(ArgumentException)
-            {
-                return false;
-            }
         }
 
         public bool TryRemoveNoteWithName(string name)
