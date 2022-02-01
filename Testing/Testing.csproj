@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <StartupObject>Testing.NoteCollectionTest</StartupObject>
+    <StartupObject>Testing.NamedNoteCollectionTest</StartupObject>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
