@@ -2,11 +2,11 @@ namespace NotesLibrary
 {
     public class NamedNoteCollection : NoteCollection
     {
-        public string? getset_name {get; set;}
+        public string? get_name {get; protected set;}
 
         public NamedNoteCollection(string name)
         {
-            getset_name = name;
+            get_name = name;
         }
     }
 }
