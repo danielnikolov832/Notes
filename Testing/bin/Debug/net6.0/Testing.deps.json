@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v6.0": {
       "Testing/1.0.0": {
         "dependencies": {
-          "NotesLibrary": "1.0.0"
+          "NotesLibrary": "1.0.0",
+          "ToDoListLibrary": "1.0.0"
         },
         "runtime": {
           "Testing.dll": {}
@@ -17,6 +18,14 @@
       "NotesLibrary/1.0.0": {
         "runtime": {
           "NotesLibrary.dll": {}
+        }
+      },
+      "ToDoListLibrary/1.0.0": {
+        "dependencies": {
+          "NotesLibrary": "1.0.0"
+        },
+        "runtime": {
+          "ToDoListLibrary.dll": {}
         }
       }
     }
@@ -28,6 +37,11 @@
       "sha512": ""
     },
     "NotesLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ToDoListLibrary/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

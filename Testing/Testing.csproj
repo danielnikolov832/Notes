@@ -2,10 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NotesLibrary\NotesLibrary.csproj" />
+    <ProjectReference Include="..\ToDoListLibrary\ToDoListLibrary.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-    <StartupObject>Testing.NamedNoteCollectionTest</StartupObject>
+    <StartupObject>Testing.ToDoListLibrary.TaskCalendarTest</StartupObject>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

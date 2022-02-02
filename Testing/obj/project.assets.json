@@ -11,6 +11,19 @@
         "runtime": {
           "bin/placeholder/NotesLibrary.dll": {}
         }
+      },
+      "ToDoListLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "NotesLibrary": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ToDoListLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ToDoListLibrary.dll": {}
+        }
       }
     }
   },
@@ -19,11 +32,17 @@
       "type": "project",
       "path": "../NotesLibrary/NotesLibrary.csproj",
       "msbuildProject": "../NotesLibrary/NotesLibrary.csproj"
+    },
+    "ToDoListLibrary/1.0.0": {
+      "type": "project",
+      "path": "../ToDoListLibrary/ToDoListLibrary.csproj",
+      "msbuildProject": "../ToDoListLibrary/ToDoListLibrary.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "NotesLibrary >= 1.0.0"
+      "NotesLibrary >= 1.0.0",
+      "ToDoListLibrary >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -53,6 +72,9 @@
           "projectReferences": {
             "C:\\Users\\User\\Desktop\\THE_PARENT\\OUTSIDE_PROGRAMMING\\Pure C-Sharp\\Notes\\NotesLibrary\\NotesLibrary.csproj": {
               "projectPath": "C:\\Users\\User\\Desktop\\THE_PARENT\\OUTSIDE_PROGRAMMING\\Pure C-Sharp\\Notes\\NotesLibrary\\NotesLibrary.csproj"
+            },
+            "C:\\Users\\User\\Desktop\\THE_PARENT\\OUTSIDE_PROGRAMMING\\Pure C-Sharp\\Notes\\ToDoListLibrary\\ToDoListLibrary.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\THE_PARENT\\OUTSIDE_PROGRAMMING\\Pure C-Sharp\\Notes\\ToDoListLibrary\\ToDoListLibrary.csproj"
             }
           }
         }
