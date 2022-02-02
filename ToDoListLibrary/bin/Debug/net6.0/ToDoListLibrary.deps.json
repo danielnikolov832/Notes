@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "ToDoListLibrary/1.0.0": {
+        "dependencies": {
+          "NotesLibrary": "1.0.0"
+        },
+        "runtime": {
+          "ToDoListLibrary.dll": {}
+        }
+      },
+      "NotesLibrary/1.0.0": {
+        "runtime": {
+          "NotesLibrary.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ToDoListLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NotesLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
