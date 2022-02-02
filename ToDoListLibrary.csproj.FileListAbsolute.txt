@@ -1,0 +1,15 @@
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\bin\Debug\net6.0\ToDoListLibrary.deps.json
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\bin\Debug\net6.0\ToDoListLibrary.dll
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\bin\Debug\net6.0\ref\ToDoListLibrary.dll
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\bin\Debug\net6.0\ToDoListLibrary.pdb
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\bin\Debug\net6.0\NotesLibrary.dll
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\bin\Debug\net6.0\NotesLibrary.pdb
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\obj\Debug\net6.0\ToDoListLibrary.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\obj\Debug\net6.0\ToDoListLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\obj\Debug\net6.0\ToDoListLibrary.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\obj\Debug\net6.0\ToDoListLibrary.AssemblyInfo.cs
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\obj\Debug\net6.0\ToDoListLibrary.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\obj\Debug\net6.0\ToDoListLibrary.csproj.CopyComplete
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\obj\Debug\net6.0\ToDoListLibrary.dll
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\obj\Debug\net6.0\ref\ToDoListLibrary.dll
+C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\ToDoListLibrary\obj\Debug\net6.0\ToDoListLibrary.pdb
