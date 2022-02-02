@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotesLibrary", "NotesLibrary\NotesLibrary.csproj", "{F16C2EE8-EBA4-4CB4-9FC3-3DEB617E6B1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{527429C3-745C-4145-97B4-99A0E09913CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListLibrary", "ToDoListLibrary\ToDoListLibrary.csproj", "{50666C93-C233-4191-A6CF-9B88725B1012}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F16C2EE8-EBA4-4CB4-9FC3-3DEB617E6B1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F16C2EE8-EBA4-4CB4-9FC3-3DEB617E6B1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F16C2EE8-EBA4-4CB4-9FC3-3DEB617E6B1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F16C2EE8-EBA4-4CB4-9FC3-3DEB617E6B1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{527429C3-745C-4145-97B4-99A0E09913CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{527429C3-745C-4145-97B4-99A0E09913CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{527429C3-745C-4145-97B4-99A0E09913CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{527429C3-745C-4145-97B4-99A0E09913CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50666C93-C233-4191-A6CF-9B88725B1012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50666C93-C233-4191-A6CF-9B88725B1012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50666C93-C233-4191-A6CF-9B88725B1012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50666C93-C233-4191-A6CF-9B88725B1012}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
