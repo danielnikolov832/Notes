@@ -1,6 +1,6 @@
 ﻿using NotesLibrary;
 
-namespace Testing
+namespace Testing.NotesLibrary
 {
     internal class NoteTest
     {

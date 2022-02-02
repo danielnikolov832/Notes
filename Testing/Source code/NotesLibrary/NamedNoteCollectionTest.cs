@@ -1,8 +1,8 @@
 using NotesLibrary;
 
-namespace Testing
+namespace Testing.NotesLibrary
 {
-    internal static class NoteCollectionTest
+    internal static class NamedNoteCollectionTest
     {
         private static void Main(string[] args)
         {
@@ -12,7 +12,7 @@ namespace Testing
 
         private static void TestConstruction()
         {
-            NoteCollection noteCollection1 = new NoteCollection(); 
+            NamedNoteCollection<Note> noteCollection1 = new NamedNoteCollection<Note>("basic collection"); 
 
             List<Note> notesList = new List<Note>()
             {
@@ -26,7 +26,7 @@ namespace Testing
 
         private static void TestMethods()
         {
-            NoteCollection noteCollection1 = new NoteCollection();
+            NamedNoteCollection<Note> noteCollection1 = new NamedNoteCollection<Note>("basic collection");
 
             Note note1 = new Note("Num 1");
             Note note2 = new Note("Num 2");
@@ -40,7 +40,7 @@ namespace Testing
             };
 
             noteCollection1.TryAdd(note1);
-            noteCollection1.AddRange(notesList);
+            noteCollection1.TryAddRange(notesList);
 
             noteCollection1[0] = note1;
 
