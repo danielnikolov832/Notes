@@ -5,12 +5,12 @@ using System.Diagnostics.CodeAnalysis;
 namespace NotesLibrary
 {
     // Defines a collection for notes, with the capability to manage said notes
-    public class NoteCollection : Collection<Note>
+    public class NoteCollection<TNote> : Collection<TNote> where TNote : Note
     {
         // Defines the way in which equality between notes is determined, to ensure no replication of notes
-        private class NoteEqualityComparer : IEqualityComparer<Note>
+        protected class NoteEqualityComparer : IEqualityComparer<TNote>
         {
-            public bool Equals(Note? x, Note? y)
+            public virtual bool Equals(TNote? x, TNote? y)
             {
                 if (x == null && y == null) return true;
 
@@ -24,7 +24,7 @@ namespace NotesLibrary
                 return output_areEqual;
             }
 
-            public int GetHashCode([DisallowNullAttribute] Note obj)
+            public int GetHashCode([DisallowNullAttribute] TNote obj)
             {
                 return obj.getset_name.GetHashCode(StringComparison.Ordinal);
             }
@@ -33,26 +33,20 @@ namespace NotesLibrary
         private const string otherNotesEqualToThisOne =
         "There is a note, equal to this one";
 
-        private NoteEqualityComparer _comparer = new NoteEqualityComparer();
+        protected virtual NoteEqualityComparer none_comparer {get; init;} = new NoteEqualityComparer();
 
-        public event EventHandler<Note>? OnBeforeInsertItem;
-        public event EventHandler<Note>? OnBeforeSetItem;
-        public event EventHandler<Note>? OnBeforeRemoveItem;
+        public event EventHandler<TNote>? OnBeforeInsertItem;
+        public event EventHandler<TNote>? OnBeforeSetItem;
+        public event EventHandler<TNote>? OnBeforeRemoveItem;
 
-        public NoteCollection() : base()
-        {
-
-        }
-
-        #region Collection<Note> overrides
-
-            protected override void InsertItem(int index, Note item)
+        #region Collection<TNote> overrides
+            protected sealed override void InsertItem(int index, TNote item)
             {
                 bool isItemValid = IsNewItemValid(item);
     
                 if (isItemValid)
                 {
-                    SubscribeToPropertyChangeEventOfElement(item);
+                    BindToNoteItem(item);
 
                     OnBeforeInsertItem?.Invoke(this, item);
                     
@@ -60,20 +54,20 @@ namespace NotesLibrary
                 }
                 else
                 {
-                    throw new ArgumentException(otherNotesEqualToThisOne);
+                    OnInvalidItem(item);
                 }
             }
     
-            protected override void SetItem(int index, Note item)
+            protected sealed override void SetItem(int index, TNote item)
             {
                 bool isItemValid = IsExistingItemValid(index, item);
     
                 if (isItemValid)
                 {
-                    Note previousExistingItem = this[index];
+                    TNote previousExistingItem = this[index];
 
-                    UnsubscribeToPropertyChangeEventOfElement(previousExistingItem);
-                    SubscribeToPropertyChangeEventOfElement(item);
+                    UnbindToNoteItem(previousExistingItem);
+                    BindToNoteItem(item);
 
                     OnBeforeSetItem?.Invoke(this, item);
 
@@ -81,81 +75,113 @@ namespace NotesLibrary
                 }
                 else
                 {
-                    throw new ArgumentException(otherNotesEqualToThisOne);
+                    OnInvalidItem(item);
                 }
             }
     
-            protected override void RemoveItem(int index)
+            protected sealed override void RemoveItem(int index)
             {
-                Note item = this[index];
+                TNote item = this[index];
 
-                UnsubscribeToPropertyChangeEventOfElement(item);
+                UnbindToNoteItem(item);
 
                 OnBeforeRemoveItem?.Invoke(this, item);
 
                 base.RemoveItem(index);
             }
     
-            protected override void ClearItems()
+            protected sealed override void ClearItems()
             {
                 for (int i = 0; i < Count; i++)
                 {
-                    Note item = this[i];
+                    TNote item = this[i];
 
-                    UnsubscribeToPropertyChangeEventOfElement(item);
+                    UnbindToNoteItem(item);
 
                     OnBeforeRemoveItem?.Invoke(this, item);
-                }
-    
-                base.ClearItems();
+
+                    RemoveItem(i);
+                }    
             }
 
         #endregion
 
-        private void SubscribeToPropertyChangeEventOfElement(Note e)
+        private void BindToNoteItem(TNote noteItem)
+        {
+            SubscribeToPropertyChangeEventOfElement(noteItem);
+
+            CustomBind(noteItem);
+        }
+
+        // A method, that gives derived classes the ability to perform custom binding
+        protected virtual void CustomBind(TNote noteItem)
+        {
+
+        }
+
+        private void SubscribeToPropertyChangeEventOfElement(TNote e)
         {
             e.PropertyChanged += Note_PropertyChanged;
         }
 
-        private void UnsubscribeToPropertyChangeEventOfElement(Note e)
+        private void UnbindToNoteItem(TNote noteItem)
+        {
+            UnubscribeToPropertyChangeEventOfElement(noteItem);
+
+            CustomUnbind(noteItem);
+        }
+
+        private void UnubscribeToPropertyChangeEventOfElement(TNote e)
         {
             e.PropertyChanged -= Note_PropertyChanged;
         }
 
-        private bool IsNewItemValid(Note noteItem)
+        // A method, that gives derived classes the ability to perform custom unbinding
+        protected virtual void CustomUnbind(TNote noteItem)
+        {
+
+        }
+
+        private bool IsNewItemValid(TNote noteItem)
         {
             for (int i = 0; i < Count; i++)
             {
-                if (_comparer.Equals(this[i], noteItem)) return false;
+                if (none_comparer.Equals(this[i], noteItem)) return false;
             }
 
             return true;
         }
 
-        private bool IsExistingItemValid(int existingItemIndex, Note noteItem)
+        private bool IsExistingItemValid(int existingItemIndex, TNote noteItem)
         {
             for (int i = 0; i < Count; i++)
             {
-                if (_comparer.Equals(this[i], noteItem) && (i != existingItemIndex)) return false;
+                if (none_comparer.Equals(this[i], noteItem) && (i != existingItemIndex)) return false;
             }
 
             return true;
         }
 
-        protected virtual void Note_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        // A method that describes what happens when an invalid item is detected
+        protected virtual void OnInvalidItem(TNote note)
         {
-            if (sender is Note note)
+            throw new ArgumentException(otherNotesEqualToThisOne);
+        }
+
+        private void Note_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (sender is TNote note)
             {
                 bool isItemValid = IsExistingItemValid(IndexOf(note), note);
 
                 if (isItemValid == false)
                 {
-                    throw new ArgumentException(otherNotesEqualToThisOne);
+                    OnInvalidItem(note);
                 }
             }
         }
 
-        public bool TryAdd(Note note)
+        public bool TryAdd(TNote note)
         {
             try
             {
@@ -169,19 +195,19 @@ namespace NotesLibrary
             return true;
         }
         
-        public void AddRange(IEnumerable<Note> noteEnumerable)
+        public void AddRange(IEnumerable<TNote> noteEnumerable)
         {
-            foreach (Note noteItem in noteEnumerable)
+            foreach (TNote noteItem in noteEnumerable)
             {
                 Add(noteItem);
             }
         }
 
-        public bool[] TryAddRange(IEnumerable<Note> noteEnumerable)
+        public bool[] TryAddRange(IEnumerable<TNote> noteEnumerable)
         {
             List<bool> output = new List<bool>();
 
-            foreach (Note noteItem in noteEnumerable)
+            foreach (TNote noteItem in noteEnumerable)
             {
                 bool isAdded = TryAdd(noteItem);
 
@@ -191,11 +217,11 @@ namespace NotesLibrary
             return output.ToArray();
         }
 
-        public Note? GetNoteWithName(string name)
+        public TNote? GetNoteWithName(string name)
         {
             for (int i = 0; i < Count; i++)
             {
-                Note noteItem = this[i];
+                TNote noteItem = this[i];
 
                 if (noteItem.getset_name == name) return noteItem;
             }
@@ -205,7 +231,7 @@ namespace NotesLibrary
 
         public bool TryRemoveNoteWithName(string name)
         {
-            Note? noteItemWithName = GetNoteWithName(name);
+            TNote? noteItemWithName = GetNoteWithName(name);
 
             if (noteItemWithName == null) return false;
             
@@ -214,11 +240,11 @@ namespace NotesLibrary
             return output_isRemoved;
         }
 
-        public void RemoveAllWhere(Predicate<Note> condition)
+        public void RemoveAllWhere(Predicate<TNote> condition)
         {
             for (int i = 0; i < Count; i++)
             {
-                Note noteItem = this[i];
+                TNote noteItem = this[i];
 
                 bool hasCondition = condition.Invoke(noteItem);
 
