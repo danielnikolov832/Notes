@@ -1,6 +1,8 @@
+using System.ComponentModel;
+
 namespace NotesLibrary
 {
-    public class NamedNoteCollection : NoteCollection
+    public class NamedNoteCollection<TNote> : NoteCollection<TNote> where TNote : Note
     {
         public string? get_name {get; protected set;}
 

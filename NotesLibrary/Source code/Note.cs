@@ -38,7 +38,7 @@ namespace NotesLibrary
             }
         }
                 
-        public NoteCollection get_subNotes { get; init; }
+        public NoteCollection<Note> get_subNotes { get; init; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
@@ -51,7 +51,7 @@ namespace NotesLibrary
             this.name = name;
             this.text = text;
 
-            get_subNotes = new NoteCollection();
+            get_subNotes = new NoteCollection<Note>();
 
             SetSubNotesEvents();
         }
@@ -61,7 +61,7 @@ namespace NotesLibrary
             this.name = name;
             this.text = text;
 
-            get_subNotes = new NoteCollection();
+            get_subNotes = new NoteCollection<Note>();
 
             SetSubNotesEvents();
 
@@ -78,14 +78,28 @@ namespace NotesLibrary
             get_subNotes.OnBeforeRemoveItem += get_SubNotes_NoteCollection_OnBeforeRemoveItem;
         }
 
-        protected virtual void get_SubNotes_NoteCollection_OnBeforeInsertOrSetItem(object? sender, Note e)
+        private void get_SubNotes_NoteCollection_OnBeforeInsertOrSetItem(object? sender, Note e)
         {
             e.parentNote = this;
+            
+            NoteCollection_OnBeforeInsertOrSetItem(sender, e);
         }
 
-        protected virtual void get_SubNotes_NoteCollection_OnBeforeRemoveItem(object? sender, Note e)
+        private void get_SubNotes_NoteCollection_OnBeforeRemoveItem(object? sender, Note e)
         {
             e.parentNote = null;
+
+            NoteCollection_OnBeforeRemoveItem(sender, e);
+        }
+
+        protected virtual void NoteCollection_OnBeforeInsertOrSetItem(object? sender, Note e)
+        {
+
+        }
+
+        protected virtual void NoteCollection_OnBeforeRemoveItem(object? sender, Note e)
+        {
+
         }
     }
 }
