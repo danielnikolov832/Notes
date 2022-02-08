@@ -2,6 +2,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
+using NotesLibrary.Notes;
+
 namespace NotesLibrary
 {
     // Defines a collection for notes, with the capability to manage said notes
@@ -35,9 +37,53 @@ namespace NotesLibrary
 
         protected virtual NoteEqualityComparer none_comparer {get; init;} = new NoteEqualityComparer();
 
-        public event EventHandler<TNote>? OnBeforeInsertItem;
-        public event EventHandler<TNote>? OnBeforeSetItem;
-        public event EventHandler<TNote>? OnBeforeRemoveItem;
+        public event EventHandler<OnActionAndBindStateEventArgs>? OnAfterInsertAndBeforeBindToItem;
+        protected virtual void OnAfterInsertAndBeforeBindToItem_Invoke(int index, TNote item)
+        {
+            OnAfterInsertAndBeforeBindToItem?.Invoke(this, new OnActionAndBindStateEventArgs(index, item));
+        }
+
+        public event EventHandler<OnActionAndBindStateEventArgs>? OnAfterSetAndBeforeBindToItem;
+        protected virtual void OnAfterSetAndBeforeBindToItem_Invoke(int index, TNote item)
+        {
+            OnAfterSetAndBeforeBindToItem?.Invoke(this, new OnActionAndBindStateEventArgs(index, item));
+        }
+
+        public event EventHandler<OnActionAndBindStateEventArgs>? OnAfterRemoveAndUnbindFromItem;
+        protected virtual void OnAfterRemoveAndUnbindToItem_Invoke(int index, TNote item)
+        {
+            OnAfterRemoveAndUnbindFromItem?.Invoke(this, new OnActionAndBindStateEventArgs(index, item));
+        }
+
+        public class OnActionAndBindStateEventArgs : EventArgs
+        {
+            public int get_index {get; init;}
+            public TNote get_noteItem {get; init;}
+
+            public OnActionAndBindStateEventArgs(int index, TNote noteItem)
+            {
+                get_index = index;
+                get_noteItem = noteItem;
+            }
+        }
+
+        public event EventHandler<OnAfterMoveItemFromOldToNewIndexEventArgs>? OnAfterMoveItemFromOldToNewIndex;
+        public class OnAfterMoveItemFromOldToNewIndexEventArgs : EventArgs
+        {
+            public int get_oldIndex {get; init;}
+            public int get_newIndex {get; init;}
+
+            public OnAfterMoveItemFromOldToNewIndexEventArgs(int oldIndex, int newIndex)
+            {
+                get_oldIndex = oldIndex;
+                get_newIndex = newIndex;
+            }
+        }
+        protected virtual void Invoke_OnAfterMoveItemFromOldToNewIndex(int oldIndex, int newIndex)
+        {
+            OnAfterMoveItemFromOldToNewIndex?.Invoke(this, new OnAfterMoveItemFromOldToNewIndexEventArgs(oldIndex, newIndex));
+        }
+
 
         #region Collection<TNote> overrides
             protected sealed override void InsertItem(int index, TNote item)
@@ -46,18 +92,18 @@ namespace NotesLibrary
     
                 if (isItemValid)
                 {
-                    BindToNoteItem(item);
-
-                    OnBeforeInsertItem?.Invoke(this, item);
-                    
                     base.InsertItem(index, item);
+
+                    OnAfterInsertAndBeforeBindToItem_Invoke(index, item);
+
+                    BindToNoteItem(item);
                 }
                 else
                 {
                     OnInvalidItem(item);
                 }
             }
-    
+
             protected sealed override void SetItem(int index, TNote item)
             {
                 bool isItemValid = IsExistingItemValid(index, item);
@@ -67,39 +113,34 @@ namespace NotesLibrary
                     TNote previousExistingItem = this[index];
 
                     UnbindToNoteItem(previousExistingItem);
-                    BindToNoteItem(item);
-
-                    OnBeforeSetItem?.Invoke(this, item);
 
                     base.SetItem(index, item);
+
+                    OnAfterSetAndBeforeBindToItem_Invoke(index, item);
+
+                    BindToNoteItem(item);
                 }
-                else
+            else
                 {
                     OnInvalidItem(item);
                 }
             }
-    
-            protected sealed override void RemoveItem(int index)
-            {
-                TNote item = this[index];
 
-                UnbindToNoteItem(item);
+        protected sealed override void RemoveItem(int index)
+        {
+            TNote item = this[index];
 
-                OnBeforeRemoveItem?.Invoke(this, item);
+            UnbindToNoteItem(item);
 
-                base.RemoveItem(index);
-            }
-    
-            protected sealed override void ClearItems()
+            base.RemoveItem(index);
+
+            OnAfterRemoveAndUnbindToItem_Invoke(index, item);
+        }
+
+        protected sealed override void ClearItems()
             {
                 for (int i = 0; i < Count; i++)
                 {
-                    TNote item = this[i];
-
-                    UnbindToNoteItem(item);
-
-                    OnBeforeRemoveItem?.Invoke(this, item);
-
                     RemoveItem(i);
                 }    
             }
@@ -110,11 +151,11 @@ namespace NotesLibrary
         {
             SubscribeToPropertyChangeEventOfElement(noteItem);
 
-            CustomBind(noteItem);
+            CustomBindToItem(noteItem);
         }
 
         // A method, that gives derived classes the ability to perform custom binding
-        protected virtual void CustomBind(TNote noteItem)
+        protected virtual void CustomBindToItem(TNote noteItem)
         {
 
         }
@@ -128,7 +169,7 @@ namespace NotesLibrary
         {
             UnubscribeToPropertyChangeEventOfElement(noteItem);
 
-            CustomUnbind(noteItem);
+            CustomUnbindToItem(noteItem);
         }
 
         private void UnubscribeToPropertyChangeEventOfElement(TNote e)
@@ -137,7 +178,7 @@ namespace NotesLibrary
         }
 
         // A method, that gives derived classes the ability to perform custom unbinding
-        protected virtual void CustomUnbind(TNote noteItem)
+        protected virtual void CustomUnbindToItem(TNote noteItem)
         {
 
         }
@@ -181,6 +222,19 @@ namespace NotesLibrary
             }
         }
 
+        // Gives the ability to move an item
+        protected void MoveItemFromOldToNewIndex(int oldIndex, int newIndex)
+        {
+            TNote noteItemAtOldIndex = this[oldIndex];
+
+            TNote noteItemAtNewIndex = this[newIndex];
+
+            base.SetItem(oldIndex, noteItemAtNewIndex);
+            base.SetItem(newIndex, noteItemAtOldIndex);
+
+            Invoke_OnAfterMoveItemFromOldToNewIndex(oldIndex, newIndex);
+        }
+
         public bool TryAdd(TNote note)
         {
             try
@@ -194,7 +248,7 @@ namespace NotesLibrary
 
             return true;
         }
-        
+
         public void AddRange(IEnumerable<TNote> noteEnumerable)
         {
             foreach (TNote noteItem in noteEnumerable)
@@ -203,18 +257,20 @@ namespace NotesLibrary
             }
         }
 
-        public bool[] TryAddRange(IEnumerable<TNote> noteEnumerable)
+        public bool[] TryAddRange(List<TNote> noteEnumerable)
         {
-            List<bool> output = new List<bool>();
+            bool[] output = new bool[noteEnumerable.Count];
 
-            foreach (TNote noteItem in noteEnumerable)
+            for (int i = 0; i < noteEnumerable.Count; i++)
             {
+                TNote noteItem = noteEnumerable[i];
+
                 bool isAdded = TryAdd(noteItem);
 
-                output.Add(isAdded);
+                output[i] = isAdded;
             }
 
-            return output.ToArray();
+            return output;
         }
 
         public TNote? GetNoteWithName(string name)
