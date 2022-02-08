@@ -6,7 +6,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <StartupObject>Testing.ToDoListLibrary.TaskCalendarTest</StartupObject>
+    <StartupObject>Testing.NotesLibrary.NoteWithSubNotesTest</StartupObject>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
