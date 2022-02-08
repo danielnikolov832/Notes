@@ -1,4 +1,4 @@
-using System.ComponentModel;
+using NotesLibrary.Notes;
 
 namespace NotesLibrary
 {
