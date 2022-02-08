@@ -1,4 +1,5 @@
 using NotesLibrary;
+using NotesLibrary.Notes;
 
 namespace Testing.NotesLibrary
 {
@@ -44,6 +45,8 @@ namespace Testing.NotesLibrary
             noteCollection1.TryAddRange(notesList);
 
             noteCollection1[0] = note1;
+
+            // noteCollection1.MoveItemFromOldToNewIndex(1, 2); Member NoteCollection.MoveItem was made inaccessable, but still works;
 
             noteCollection1.Remove(note2);
             noteCollection1.RemoveAt(1);
