@@ -1,4 +1,5 @@
 using NotesLibrary;
+using NotesLibrary.Notes;
 
 namespace Testing.NotesLibrary
 {
