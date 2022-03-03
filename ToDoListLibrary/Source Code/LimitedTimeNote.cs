@@ -5,24 +5,31 @@ namespace ToDoListLibrary
 {
     public class LimitedTimeNote : NoteWithSubNotes<Note>
     {
-        private const string invalidFinalTimeArgumentString = "The argument 'finalTime' is invalid, because (finalTime =< DateTime.Now)";
+        // Do not modify directly, use getset_finalTime instead
+        private DateTimeOffset _finalTime;
+        public DateTimeOffset getset_finalTime
+        {
+            get => _finalTime;
+            set => _finalTime = ValidateAndGetFinalTime_OrThrow(value);
+        }
 
-        public DateTimeOffset get_finalTime { get; init; }
-        public bool get_isFinalTimeLaterThanNow { get => IsFinalTimeLaterThanNow(get_finalTime); }
+        public bool get_isFinalTimeLaterThanNow { get => IsDateTimeOffsetLaterThanNow(getset_finalTime); }
 
         public LimitedTimeNote(string name, DateTimeOffset finalTime, string text = "") : base(name, text)
         {
-            get_finalTime = ValidateAndGetFinalTime_OrThrow(finalTime);
+            getset_finalTime = finalTime;
         }
 
         public LimitedTimeNote(string name, NoteCollection<Note> subNotes, DateTimeOffset finalTime, string text = "") : base(name, subNotes, text)
         {
-            get_finalTime = ValidateAndGetFinalTime_OrThrow(finalTime);
+            getset_finalTime = finalTime;
         }
+
+        private const string invalidFinalTimeArgumentString = "The argument 'finalTime' is invalid, because (finalTime =< DateTime.Now)";
 
         private DateTimeOffset ValidateAndGetFinalTime_OrThrow(DateTimeOffset finalTime)
         {
-            if (IsFinalTimeLaterThanNow(finalTime) == false)
+            if (IsDateTimeOffsetLaterThanNow(finalTime) == false)
             {
                 throw new ArgumentException(invalidFinalTimeArgumentString);
             }
@@ -30,7 +37,7 @@ namespace ToDoListLibrary
             return finalTime;
         }
 
-        private bool IsFinalTimeLaterThanNow(DateTimeOffset finalTime)
+        private bool IsDateTimeOffsetLaterThanNow(DateTimeOffset finalTime)
         {
             return finalTime > DateTimeOffset.Now;
         }
