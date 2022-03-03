@@ -26,7 +26,7 @@ namespace ToDoListLibrary
                     return +1;
                 }
 
-                return x.get_finalTime.CompareTo(y.get_finalTime);
+                return x.getset_finalTime.CompareTo(y.getset_finalTime);
             }
         }
 
