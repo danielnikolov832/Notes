@@ -86,12 +86,12 @@ namespace Testing.NotesLibrary
 
             note1.getset_name = "Num 1 modified";
 
-            // note3.getset_name = "Num 1 modified";  Causes Unhandled exception. System.ArgumentException: There is a note, equal to this one
+            // note3.getset_name = "Num 1 modified";  Causes : Unhandled exception. System.ArgumentException: There is a note, equal to this one
             // at NotesLibrary.NoteCollection`1.OnInvalidItem(TNote note) in C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\NotesLibrary\Source code\NoteCollection.cs:line 168
 
             noteCollection1[0] = note1;
 
-            // noteCollection1[1] = note1;  Causes Unhandled exception. System.ArgumentException: There is a note, equal to this one
+            // noteCollection1[1] = note1;  Causes : Unhandled exception. System.ArgumentException: There is a note, equal to this one
             // at NotesLibrary.NoteCollection`1.OnInvalidItem(TNote note) in C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\NotesLibrary\Source code\NoteCollection.cs:line 168
 
             noteCollection1.Remove(note2);

@@ -29,6 +29,8 @@ namespace Testing.NotesLibrary
             note1.getset_name = "1 modified";
 
             noteWithSubNotes2.get_subNotes.Remove(note1);
+
+            note1.getset_name = "1 modified twice";
         }
     }   
 }
