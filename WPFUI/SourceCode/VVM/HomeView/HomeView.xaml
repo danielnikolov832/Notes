@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="WPFUI.VVM.HomeView.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFUI.VVM.HomeView"
+             
+             xmlns:i = "http://schemas.microsoft.com/xaml/behaviors"
+
+             xmlns:syncfusion = "http://schemas.syncfusion.com/wpf"
+             
+             xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+             
+
+             xmlns:localNoteTreeView = "clr-namespace:WPFUI.VVM.NoteTreeView"
+             xmlns:localPropertyListView = "clr-namespace:WPFUI.VVM.PropertyListView"
+             xmlns:localNoteTypeCreatePopup = "clr-namespace:WPFUI.VVM.NoteTypeCreatePopup"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="415" d:DesignWidth="800"
+             
+             >
+
+    <Grid>
+
+        <!-- <Grid.Background>
+            <ImageBrush ImageSource = "C:\Users\User\Desktop\THE_PARENT\OUTSIDE_PROGRAMMING\Pure C-Sharp\Notes\WPFUI\Resources\Images\bg.jpg"/>
+        </Grid.Background> -->
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width = "250" />
+            <ColumnDefinition Width = "*" />
+            <ColumnDefinition Width = "*" />
+            <ColumnDefinition Width = "20" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height = "20" />
+            <RowDefinition Height = "1.4*" />
+            <RowDefinition Height = "*" />
+            <RowDefinition Height = "20" />
+        </Grid.RowDefinitions>
+
+
+        <localNoteTreeView:NoteTreeView x:Name = "NoteTreeViewElement" 
+                                        Grid.Row = "1" Grid.Column = "0" Grid.RowSpan = "2"
+                                        Margin = "0, 10, 30, 0"
+                                        Background="White"/>
+
+        <localPropertyListView:PropertyListView x:Name = "PropertyListViewElement"
+                                                Grid.Row = "1" Grid.Column = "1" Grid.RowSpan = "1"/>
+
+        <localNoteTypeCreatePopup:NoteTypeCreatePopup Visibility="Hidden"
+                                                      Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2"
+                                                      Margin="30, 20, 30, 90"
+                                                      Background="Transparent">
+
+            <i:Interaction.Triggers>
+
+                <i:EventTrigger SourceObject="{x:Reference Name=PropertyListViewElement}" EventName="TypeCreateButtonClick">
+                    <i:ChangePropertyAction PropertyName="Visibility" Value="Visible"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            
+        </localNoteTypeCreatePopup:NoteTypeCreatePopup>
+
+
+
+        <!-- <Button
+            Grid.Row = "2" Grid.Column = "2">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName = "Click">
+                        <i:InvokeCommandAction Command = "{Binding get_deleteItemsFromTreeViewCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button> -->
+
+
+        <!-- Button that deletes notes -->
+
+        <!-- <Button
+                Grid.Row = "3" Grid.Column = "2"
+                Margin = "0, 25, 0, 10">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName = "Click">
+                        <i:InvokeCommandAction Command = "{Binding get_switchSelectionModeCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button> -->
+
+        <!-- Button that creates notes -->
+
+        <!-- <Button
+                Grid.Row = "4" Grid.Column = "2">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName = "Click">
+                        <i:InvokeCommandAction Command = "{Binding get_addItemToTreeViewCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button> -->
+
+    </Grid>
+</UserControl>

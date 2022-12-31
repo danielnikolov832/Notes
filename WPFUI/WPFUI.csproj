@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="Syncfusion.SfInput.WPF" Version="20.3.0.56" />
+    <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.3.0.56" />
+    <PackageReference Include="Syncfusion.Themes.MaterialDark.WPF" Version="20.3.0.56" />
+    <PackageReference Include="Syncfusion.Themes.MaterialLight.WPF" Version="20.3.0.56" />
+    <PackageReference Include="Syncfusion.Themes.Office2019Colorful.WPF" Version="20.3.0.56" />
+    <PackageReference Include="Syncfusion.Themes.VisualStudio2015.WPF" Version="20.3.0.56" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.3.0.56" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\source\repos\MediaTrPackageTestingLib\CustomMediatorForTalksBetweenVMsExp\CustomMediatorForTalksBetweenVMsExp.csproj" />
+    <ProjectReference Include="..\BusinessLogicLibrary\BusinessLogicLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

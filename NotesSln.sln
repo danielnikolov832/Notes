@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9387B506-BCB7-491B-A4E6-AC9450FA5CD5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLibrary", "BusinessLogicLibrary\BusinessLogicLibrary.csproj", "{D21A8D76-7B63-4C36-ACD4-10AB7E21C47E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFUI", "WPFUI\WPFUI.csproj", "{DF443D89-6187-43A3-B652-9E407D36A715}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D21A8D76-7B63-4C36-ACD4-10AB7E21C47E} = {D21A8D76-7B63-4C36-ACD4-10AB7E21C47E}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomMediatorForTalksBetweenVMsExp", "..\..\..\..\..\source\repos\MediaTrPackageTestingLib\CustomMediatorForTalksBetweenVMsExp\CustomMediatorForTalksBetweenVMsExp.csproj", "{63AB7A42-7540-4C5D-96AB-FB8BE79553BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqliteDALLib", "..\..\..\..\..\source\repos\SqliteDALExperiments\SqliteDALLib\SqliteDALLib.csproj", "{CFFAFFE9-1656-43CD-A7A2-82AE0D144AA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D21A8D76-7B63-4C36-ACD4-10AB7E21C47E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D21A8D76-7B63-4C36-ACD4-10AB7E21C47E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D21A8D76-7B63-4C36-ACD4-10AB7E21C47E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D21A8D76-7B63-4C36-ACD4-10AB7E21C47E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF443D89-6187-43A3-B652-9E407D36A715}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF443D89-6187-43A3-B652-9E407D36A715}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF443D89-6187-43A3-B652-9E407D36A715}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF443D89-6187-43A3-B652-9E407D36A715}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63AB7A42-7540-4C5D-96AB-FB8BE79553BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63AB7A42-7540-4C5D-96AB-FB8BE79553BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63AB7A42-7540-4C5D-96AB-FB8BE79553BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63AB7A42-7540-4C5D-96AB-FB8BE79553BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFFAFFE9-1656-43CD-A7A2-82AE0D144AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFFAFFE9-1656-43CD-A7A2-82AE0D144AA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFFAFFE9-1656-43CD-A7A2-82AE0D144AA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFFAFFE9-1656-43CD-A7A2-82AE0D144AA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38EF85E7-A407-4258-B258-BA256C35E69C}
+	EndGlobalSection
+EndGlobal
